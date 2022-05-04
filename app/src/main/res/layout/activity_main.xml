@@ -63,16 +63,19 @@
             tools:ignore="UsingOnClickInXml" />
         <Button
             style="@style/buttonOp"
-            android:text="swap"/>
+            android:text="swap"
+            android:onClick="swapAction"
+            tools:ignore="OnClick" />
         <Button
             style="@style/buttonOp"
-            android:text="drop"/>
+            android:text="drop"
+            android:onClick="dropAction"/>
         <Button
             style="@style/buttonOp"
-            android:text="^n" />
+            android:text="pow" />
         <Button
             style="@style/buttonOp"
-            android:text="√" />
+            android:text="sqrt" />
         <Button
             style="@style/buttonOp"
             android:text="⌫"

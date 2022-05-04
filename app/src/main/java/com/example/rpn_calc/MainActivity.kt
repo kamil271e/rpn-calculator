@@ -6,11 +6,11 @@ import android.view.View
 import android.widget.Button
 import kotlinx.android.synthetic.main.activity_main.*
 import android.util.Log
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class MainActivity : AppCompatActivity() {
     private var canPushStack = true
-    private var canUseOperator = false
-    private var canPutComma = false
     private var stack = ArrayDeque<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,11 @@ class MainActivity : AppCompatActivity() {
     }
     fun numberAction(view: View) {
         if (view is Button){
-            calcTextView.append(view.text)
+            var flag = false
+            for (c in calcTextView.text){
+                if (!c.isDigit() && c.toString() != ".") flag = true
+            }
+            if (!flag) calcTextView.append(view.text)
         }
     }
     fun operationAction(view: View) {
@@ -31,12 +35,13 @@ class MainActivity : AppCompatActivity() {
                 if (data.indexOf(".", index) == -1 && data.isNotEmpty())
                     calcTextView.append(view.text)
             }
-            else calcTextView.append(view.text)
+            else if (data == "") calcTextView.append(view.text)
         }
     }
     fun clearAction(view: View) {
         calcTextView.text = ""
         stack.clear()
+        updateStackView()
     }
     fun enterAction(view: View) {
 
@@ -45,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         if (calcText.isEmpty()) return
 
         try {
-            calcText.toInt()
+            calcText.toFloat()
         }catch (e: NumberFormatException){
             canPushStack = false
         }
@@ -61,41 +66,31 @@ class MainActivity : AppCompatActivity() {
                 "*" -> op = 2
                 "-" -> op = 3
                 "/" -> op = 4
+                "pow" -> op = 5
+                "sqrt" -> op = 6
             }
-            //operation(stack.removeLast().toInt(), stack.removeLast().toInt(), op)?.let { stack.add(it.toString()) }
-            val a1 = stack.removeLast().toInt()
-            val a2 = stack.removeLast().toInt()
-            // Log.i("inside","$calcText $op $a1 $a2")
-            val result = operation(a1, a2, op).toString()
             canPushStack = true
-            calcTextView.text = result
+            if (op != 6) calcTextView.text = operation(stack.removeLast().toFloat(), stack.removeLast().toFloat(), op).toString()
+            else calcTextView.text = operation(1F, stack.removeLast().toFloat(), op).toString()
         }
-        //Log.i("stack_values", stack.toString())
     }
-
     fun backSpaceAction(view: View) {
         val len = calcTextView.length()
         if(len > 0) {
             calcTextView.text = calcTextView.text.subSequence(0, len-1)
         }
     }
-
-    private fun operation(a: Int, b: Int, op: Int) : Int? {
+    private fun operation(b: Float, a: Float, op: Int) : Float? {
         when(op){
             1 -> return a+b
             2 -> return a*b
-            3 -> return b-a
-            4 -> {
-                if(a!=0) {
-                    //Log.i("division", "$a $b") // division in reversed order
-                    return b/a
-                }
+            3 -> return a-b
+            4 -> return a/b // TODO 0 handling
+            5 -> return a.pow(b)
+            6 -> return sqrt(a)
             }
-            else -> Log.i("error","Something went wrong...")
-        }
         return null
     }
-
     private fun updateStackView(){
         var temp = ""
         if (stack.size < 4){
@@ -110,5 +105,20 @@ class MainActivity : AppCompatActivity() {
         }
         Log.i("stack_view", temp)
         stackTextView.text = temp.subSequence(0, temp.length-1)
+    }
+    fun swapAction(view: View) {
+        if (stack.size >= 2){
+            val temp1 = stack.removeLast()
+            val temp2 = stack.removeLast()
+            stack.add(temp1)
+            stack.add(temp2)
+            updateStackView()
+        }
+    }
+    fun dropAction(view: View) {
+        if(stack.isNotEmpty()){
+            stack.removeLast()
+            updateStackView()
+        }
     }
 }
