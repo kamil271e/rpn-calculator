@@ -1,5 +1,6 @@
 package com.example.rpn_calc
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,12 +12,12 @@ import kotlin.math.sqrt
 
 class MainActivity : AppCompatActivity() {
     private var canPushStack = true
-    private var stack = ArrayDeque<String>()
+    private lateinit var stack: MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        readStack()
     }
     fun numberAction(view: View) {
         if (view is Button){
@@ -120,5 +121,16 @@ class MainActivity : AppCompatActivity() {
             stack.removeLast()
             updateStackView()
         }
+    }
+    fun gotoMenuActivity(view: View) {
+        val intent = Intent(this, MenuActivity::class.java)
+        val temp = stack.joinToString(" ")
+        intent.putExtra("stack", temp)
+        startActivity(intent)
+    }
+    private fun readStack(){
+        stack = intent.getSerializableExtra("stack").toString().split(" ").toMutableList()
+        if (stack[0] != "null") updateStackView()
+        else stack.clear()
     }
 }

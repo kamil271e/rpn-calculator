@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/activity_main_scene"
-    android:orientation="vertical"
     android:background="@color/black"
-    tools:ignore="HardcodedText"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    app:layoutDescription="@xml/activity_main_scene"
+    tools:context=".MainActivity"
+    tools:ignore="HardcodedText">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:padding="20dp">
 
 
@@ -36,8 +36,9 @@
 
         <TextView
             android:id="@+id/stackTextView"
-            android:layout_width="40dp"
-            android:layout_height="99dp"
+            android:layout_width="37dp"
+            android:layout_height="113dp"
+            android:background="#FF6200EE"
             android:lines="4"
             android:maxLines="4"
             android:text="0\n0\n0\n0"
@@ -46,110 +47,139 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.042"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.503" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- clear, swap, drop, ^n, sqrt !-->
-    <LinearLayout
-        style="@style/buttonRow">
+    <LinearLayout style="@style/buttonRow">
+
         <Button
             style="@style/buttonOp"
-            android:text="ac"
             android:onClick="clearAction"
+            android:text="ac"
             tools:ignore="UsingOnClickInXml" />
+
         <Button
             style="@style/buttonOp"
-            android:text="swap"
             android:onClick="swapAction"
+            android:text="swap"
             tools:ignore="OnClick" />
+
         <Button
             style="@style/buttonOp"
-            android:text="drop"
-            android:onClick="dropAction"/>
+            android:layout_height="match_parent"
+            android:onClick="dropAction"
+            android:text="drop" />
+
+
+        <Button
+            android:id="@+id/menuBtn"
+            style="@style/buttonOp"
+            android:onClick="gotoMenuActivity"
+            android:text="Menu" />
+
+    </LinearLayout>
+
+    <!-- clear, swap, drop, ^n, sqrt !-->
+    <LinearLayout style="@style/buttonRow">
+
+
+        <Button
+            style="@style/buttonOp"
+            android:text="sqrt" />
+
         <Button
             style="@style/buttonOp"
             android:text="pow" />
         <Button
             style="@style/buttonOp"
-            android:text="sqrt" />
-        <Button
-            style="@style/buttonOp"
-            android:text="⌫"
             android:onClick="backSpaceAction"
+            android:text="⌫"
             tools:ignore="UsingOnClickInXml" />
+
     </LinearLayout>
 
     <!-- 1, 2, 3, / !-->
-    <LinearLayout
-        style="@style/buttonRow">
+    <LinearLayout style="@style/buttonRow">
+
         <Button
             style="@style/buttonNum"
-            android:text="1"/>
+            android:text="1" />
+
         <Button
             style="@style/buttonNum"
-            android:text="2"/>
+            android:text="2" />
+
         <Button
             style="@style/buttonNum"
             android:text="3" />
+
         <Button
             style="@style/buttonOp"
             android:text="/" />
     </LinearLayout>
 
     <!-- 4, 5, 6, x !-->
-    <LinearLayout
-        style="@style/buttonRow">
+    <LinearLayout style="@style/buttonRow">
+
         <Button
             style="@style/buttonNum"
-            android:text="4"/>
+            android:text="4" />
+
         <Button
             style="@style/buttonNum"
-            android:text="5"/>
+            android:text="5" />
+
         <Button
             style="@style/buttonNum"
             android:text="6" />
+
         <Button
             style="@style/buttonOp"
             android:text="*" />
     </LinearLayout>
 
     <!-- 7, 8, 9, - !-->
-    <LinearLayout
-        style="@style/buttonRow">
+    <LinearLayout style="@style/buttonRow">
+
         <Button
             style="@style/buttonNum"
-            android:text="7"/>
+            android:text="7" />
+
         <Button
             style="@style/buttonNum"
-            android:text="8"/>
+            android:text="8" />
+
         <Button
             style="@style/buttonNum"
             android:text="9" />
+
         <Button
             style="@style/buttonOp"
             android:text="-" />
     </LinearLayout>
 
     <!-- 0, ., =, + !-->
-    <LinearLayout
-        style="@style/buttonRow">
+    <LinearLayout style="@style/buttonRow">
+
         <Button
             style="@style/buttonNum"
-            android:text="0"/>
+            android:text="0" />
+
         <Button
             style="@style/buttonOp"
-            android:text="."/>
+            android:text="." />
+
         <Button
             style="@style/buttonOp"
-            android:layout_weight="2"
             android:background="@color/darkGrey"
             android:onClick="enterAction"
             android:text="enter"
             tools:ignore="UsingOnClickInXml" />
+
         <Button
             style="@style/buttonOp"
             android:text="+" />
