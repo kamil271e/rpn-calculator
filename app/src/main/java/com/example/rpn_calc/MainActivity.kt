@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
                 if (data.indexOf(".", index) == -1 && data.isNotEmpty())
                     calcTextView.append(view.text)
             }
-            else if (data == "") calcTextView.append(view.text)
+            else if (data.isBlank() && stack.size > 1) calcTextView.append(view.text)
+            else if (data.isBlank() && stack.size == 1 && view.text.toString() == "sqrt") calcTextView.append(view.text)
         }
     }
     fun clearAction(view: View) {
@@ -45,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         updateStackView()
     }
     fun enterAction(view: View) {
-
         val calcText = calcTextView.text.toString()
         var op = -1
         if (calcText.isEmpty()) return
@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity() {
             stack.add(calcText)
             calcTextView.text = ""
             updateStackView()
-
         }else{
             when (calcText) {
                 "+" -> op = 1
@@ -71,8 +70,13 @@ class MainActivity : AppCompatActivity() {
                 "sqrt" -> op = 6
             }
             canPushStack = true
-            if (op != 6) calcTextView.text = operation(stack.removeLast().toFloat(), stack.removeLast().toFloat(), op).toString()
-            else calcTextView.text = operation(1F, stack.removeLast().toFloat(), op).toString()
+            var result = ""
+            if (op != 6) result = operation(stack.removeLast().toFloat(), stack.removeLast().toFloat(), op).toString()
+            else result = operation(1F, stack.removeLast().toFloat(), op).toString()
+
+            if (result.slice(result.length - 2 until result.length) == ".0"){
+                calcTextView.text = result.subSequence(0, result.length-2)
+            } else calcTextView.text = result
         }
     }
     fun backSpaceAction(view: View) {
@@ -104,7 +108,6 @@ class MainActivity : AppCompatActivity() {
         for (i in end downTo 1){
             temp += stack[stack.size-i] + "\n"
         }
-        Log.i("stack_view", temp)
         stackTextView.text = temp.subSequence(0, temp.length-1)
     }
     fun swapAction(view: View) {

@@ -2,4 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true" android:color="#FF6200EE"/>
     <item android:color="@android:color/black"/>
+    <!--<item android:background="@drawable/rounded_corners" android:color="#363434" /> -->
 </selector>

@@ -36,15 +36,16 @@
 
         <TextView
             android:id="@+id/stackTextView"
-            android:layout_width="37dp"
-            android:layout_height="113dp"
-            android:background="#FF6200EE"
+            android:layout_width="71dp"
+            android:layout_height="111dp"
+            android:background="@drawable/rounded_corners"
             android:lines="4"
             android:maxLines="4"
             android:text="0\n0\n0\n0"
             android:textAlignment="textEnd"
             android:textColor="@color/yellow"
             android:textSize="20sp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.042"
