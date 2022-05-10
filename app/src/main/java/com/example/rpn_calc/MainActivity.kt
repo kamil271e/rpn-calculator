@@ -3,6 +3,7 @@ package com.example.rpn_calc
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.View
 import android.widget.Button
 import kotlinx.android.synthetic.main.activity_main.*
@@ -13,11 +14,12 @@ import kotlin.math.sqrt
 class MainActivity : AppCompatActivity() {
     private var canPushStack = true
     private lateinit var stack: MutableList<String>
+    private var precision: Int = 6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        readStack()
+        readIntents()
     }
     fun numberAction(view: View) {
         if (view is Button){
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             }
             else if (data.isBlank() && stack.size > 1) {
                 calcTextView.append(view.text)
-                enterAction(view);
+                enterAction(view)
             }
             else if (data.isBlank() && stack.size == 1 && view.text.toString() == "sqrt"){
                 calcTextView.append(view.text)
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         updateStackView()
     }
     fun enterAction(view: View) {
-        val calcText = calcTextView.text.toString()
+        var calcText = calcTextView.text.toString()
         var op = -1
         if (calcText.isEmpty()) return
 
@@ -63,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (canPushStack) { // adding values to stack
+            calcText = checkPrecision(calcText)
             stack.add(calcText)
             calcTextView.text = ""
             updateStackView()
@@ -79,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             var result = ""
             if (op != 6) result = operation(stack.removeLast().toFloat(), stack.removeLast().toFloat(), op).toString()
             else result = operation(1F, stack.removeLast().toFloat(), op).toString()
-
+            result = checkPrecision(result)
             if (result.slice(result.length - 2 until result.length) == ".0"){
                 calcTextView.text = result.subSequence(0, result.length-2)
             } else calcTextView.text = result
@@ -99,7 +102,7 @@ class MainActivity : AppCompatActivity() {
             4 -> return a/b // TODO 0 handling
             5 -> return a.pow(b)
             6 -> return sqrt(a)
-            }
+        }
         return null
     }
     private fun updateStackView(){
@@ -132,14 +135,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun gotoMenuActivity(view: View) {
-        val intent = Intent(this, MenuActivity::class.java)
+        val myIntent = Intent(this, MenuActivity::class.java)
         val temp = stack.joinToString(" ")
-        intent.putExtra("stack", temp)
-        startActivity(intent)
+        myIntent.putExtra("stack", temp)
+        startActivity(myIntent)
     }
-    private fun readStack(){
+    private fun checkPrecision(calcText: String) : String{
+        if (calcText.split(".").size < 2) return calcText
+        val decimalPoints = calcText.split(".")[1].length
+        var text = calcText
+        Log.i("decimal+prec","$decimalPoints, $precision")
+        if(decimalPoints > precision){
+            text = String.format("%.${precision}f", calcText.toFloat())
+        }
+        return text
+    }
+    private fun readIntents(){
         stack = intent.getSerializableExtra("stack").toString().split(" ").toMutableList()
         if (stack[0] != "null" && stack[0] != "") updateStackView()
         else stack.clear()
+        precision = intent.getIntExtra("precision", precision)
     }
 }

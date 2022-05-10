@@ -19,8 +19,8 @@
 
         <TextView
             android:id="@+id/calcTextView"
-            android:layout_width="268dp"
-            android:layout_height="77dp"
+            android:layout_width="206dp"
+            android:layout_height="96dp"
             android:lines="2"
             android:maxLines="2"
             android:text=""
@@ -36,8 +36,8 @@
 
         <TextView
             android:id="@+id/stackTextView"
-            android:layout_width="71dp"
-            android:layout_height="111dp"
+            android:layout_width="121dp"
+            android:layout_height="98dp"
             android:background="@drawable/rounded_corners"
             android:lines="4"
             android:maxLines="4"
@@ -48,10 +48,10 @@
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintHorizontal_bias="0.055"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.503" />
+            app:layout_constraintVertical_bias="0.582" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -60,27 +60,29 @@
         <Button
             style="@style/buttonOp"
             android:onClick="clearAction"
-            android:text="ac"
+            android:text="AC"
             tools:ignore="UsingOnClickInXml" />
 
         <Button
             style="@style/buttonOp"
             android:onClick="swapAction"
-            android:text="swap"
-            tools:ignore="OnClick" />
+            android:text="SWAP"
+            tools:ignore="OnClick,UsingOnClickInXml" />
 
         <Button
             style="@style/buttonOp"
             android:layout_height="match_parent"
             android:onClick="dropAction"
-            android:text="drop" />
+            android:text="DROP"
+            tools:ignore="UsingOnClickInXml" />
 
 
         <Button
             android:id="@+id/menuBtn"
             style="@style/buttonOp"
             android:onClick="gotoMenuActivity"
-            android:text="Menu" />
+            android:text="MENU"
+            tools:ignore="UsingOnClickInXml" />
 
     </LinearLayout>
 
@@ -90,11 +92,11 @@
 
         <Button
             style="@style/buttonOp"
-            android:text="sqrt" />
+            android:text="SQRT" />
 
         <Button
             style="@style/buttonOp"
-            android:text="pow" />
+            android:text="POW" />
         <Button
             style="@style/buttonOp"
             android:onClick="backSpaceAction"
@@ -178,7 +180,7 @@
             style="@style/buttonOp"
             android:background="@color/darkGrey"
             android:onClick="enterAction"
-            android:text="enter"
+            android:text="ENTER"
             tools:ignore="UsingOnClickInXml" />
 
         <Button

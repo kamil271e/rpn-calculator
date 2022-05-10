@@ -16,7 +16,7 @@
         <item name="android:onClick">numberAction</item>
     </style>
 
-    <style name="buttonOp">
+    <style name="buttonOp" parent="Theme.Rpn_calc">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -24,6 +24,10 @@
         <item name="android:backgroundTint">@color/button_background</item>
         <item name="android:textColor">@color/purple_500</item>
         <item name="android:onClick">operationAction</item>
+    </style>
+
+    <style name="NumberPickerText">
+        <item name="android:textSize">25sp</item>
     </style>
 
 </resources>
