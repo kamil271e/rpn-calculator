@@ -36,8 +36,14 @@ class MainActivity : AppCompatActivity() {
                 if (data.indexOf(".", index) == -1 && data.isNotEmpty())
                     calcTextView.append(view.text)
             }
-            else if (data.isBlank() && stack.size > 1) calcTextView.append(view.text)
-            else if (data.isBlank() && stack.size == 1 && view.text.toString() == "sqrt") calcTextView.append(view.text)
+            else if (data.isBlank() && stack.size > 1) {
+                calcTextView.append(view.text)
+                enterAction(view);
+            }
+            else if (data.isBlank() && stack.size == 1 && view.text.toString() == "sqrt"){
+                calcTextView.append(view.text)
+                enterAction(view)
+            }
         }
     }
     fun clearAction(view: View) {
@@ -133,7 +139,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun readStack(){
         stack = intent.getSerializableExtra("stack").toString().split(" ").toMutableList()
-        if (stack[0] != "null") updateStackView()
+        if (stack[0] != "null" && stack[0] != "") updateStackView()
         else stack.clear()
     }
 }
