@@ -3,13 +3,12 @@ package com.example.rpn_calc
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.View
 import android.widget.Button
 import kotlinx.android.synthetic.main.activity_main.*
-import android.util.Log
 import kotlin.math.pow
 import kotlin.math.sqrt
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
     private var canPushStack = true
@@ -38,11 +37,7 @@ class MainActivity : AppCompatActivity() {
                 if (data.indexOf(".", index) == -1 && data.isNotEmpty())
                     calcTextView.append(view.text)
             }
-            else if (data.isBlank() && stack.size > 1) {
-                calcTextView.append(view.text)
-                enterAction(view)
-            }
-            else if (data.isBlank() && stack.size == 1 && view.text.toString() == "sqrt"){
+            else if (data.isBlank() && (stack.size > 1) || (stack.size == 1 && view.text.toString() == "SQRT")) {
                 calcTextView.append(view.text)
                 enterAction(view)
             }
@@ -55,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun enterAction(view: View) {
         var calcText = calcTextView.text.toString()
+        calcTextView.text = ""
         var op = -1
         if (calcText.isEmpty()) return
 
@@ -66,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         if (canPushStack) { // adding values to stack
             calcText = checkPrecision(calcText)
+            calcText = checkLength(calcText)
             stack.add(calcText)
             calcTextView.text = ""
             updateStackView()
@@ -75,17 +72,15 @@ class MainActivity : AppCompatActivity() {
                 "*" -> op = 2
                 "-" -> op = 3
                 "/" -> op = 4
-                "pow" -> op = 5
-                "sqrt" -> op = 6
+                "POW" -> op = 5
+                "SQRT" -> op = 6
             }
             canPushStack = true
-            var result = ""
-            if (op != 6) result = operation(stack.removeLast().toFloat(), stack.removeLast().toFloat(), op).toString()
-            else result = operation(1F, stack.removeLast().toFloat(), op).toString()
-            result = checkPrecision(result)
-            if (result.slice(result.length - 2 until result.length) == ".0"){
-                calcTextView.text = result.subSequence(0, result.length-2)
-            } else calcTextView.text = result
+            var result = if (op != 6) operation(stack.removeLast().toFloat(), stack.removeLast().toFloat(), op)
+            else operation(1F, stack.removeLast().toFloat(), op)
+            result = result?.let { checkPrecision(it) }
+            result = result?.let { checkLength(it) }
+            calcTextView.text = result?.let { redundantZerosSlice(it) }
         }
     }
     fun backSpaceAction(view: View) {
@@ -94,14 +89,28 @@ class MainActivity : AppCompatActivity() {
             calcTextView.text = calcTextView.text.subSequence(0, len-1)
         }
     }
-    private fun operation(b: Float, a: Float, op: Int) : Float? {
+    private fun operation(b: Float, a: Float, op: Int) : String? {
+        var intFlag = false
+        if ((a.toInt()).toString() == redundantZerosSlice(a.toString()) && (b.toInt()).toString() == redundantZerosSlice(b.toString())) {
+            intFlag = true
+        }
         when(op){
-            1 -> return a+b
-            2 -> return a*b
-            3 -> return a-b
-            4 -> return a/b // TODO 0 handling
-            5 -> return a.pow(b)
-            6 -> return sqrt(a)
+            1 ->
+                return if(intFlag) (a.toInt()+b.toInt()).toString()
+                else (a+b).toString()
+            2 ->
+                return if(intFlag) (a.toInt()*b.toInt()).toString()
+                else (a*b).toString()
+            3 ->
+                return if(intFlag) (a.toInt()-b.toInt()).toString()
+                else (a-b).toString()
+            4 ->
+                return if(intFlag) (a.toInt()/b.toInt()).toString()
+                else (a/b).toString()
+            5 ->
+                return if(intFlag) (a.pow(b.toInt())).toString()
+                else (a.pow(b)).toString()
+            6 -> return sqrt(a).toString()
         }
         return null
     }
@@ -140,15 +149,32 @@ class MainActivity : AppCompatActivity() {
         myIntent.putExtra("stack", temp)
         startActivity(myIntent)
     }
-    private fun checkPrecision(calcText: String) : String{
-        if (calcText.split(".").size < 2) return calcText
-        val decimalPoints = calcText.split(".")[1].length
-        var text = calcText
-        Log.i("decimal+prec","$decimalPoints, $precision")
+    private fun checkPrecision(str: String) : String{
+        if (str.split(".").size < 2) return str
+        val decimalPoints = str.split(".")[1].length
+        var text = str
         if(decimalPoints > precision){
-            text = String.format("%.${precision}f", calcText.toFloat())
+            text = String.format("%.${precision}f", str.toFloat())
         }
         return text
+    }
+    private fun checkLength(str: String) : String{
+        var text = str
+        if (str.length > 14){
+            text = str.subSequence(0,14).toString()
+        }
+        return text
+    }
+    private fun redundantZerosSlice(str: String): String {
+        var index = -1
+        var toSlice = 0
+        index = str.indexOf(".", index)
+        if (index == -1) return str
+        for (i in (str.length - 1) downTo 0) {
+            if (str[i] == '0') toSlice += 1
+            else break
+        }
+        return str.subSequence(0, str.length - toSlice-1).toString()
     }
     private fun readIntents(){
         stack = intent.getSerializableExtra("stack").toString().split(" ").toMutableList()

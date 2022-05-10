@@ -3,10 +3,8 @@ package com.example.rpn_calc
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.NumberPicker
-import androidx.core.os.bundleOf
+import android.util.Log
 
 class MenuActivity : AppCompatActivity() {
     private var stack = ""
@@ -28,16 +26,18 @@ class MenuActivity : AppCompatActivity() {
         val values = arrayOf(1,2,3,4,5,6)
         numberPicker.wrapSelectorWheel = true
 
-        numberPicker.setOnValueChangedListener(){
+        numberPicker.setOnValueChangedListener {
                 _, _, newVal ->
             precision = values[newVal]
         }
     }
-    fun gotoMainActivity(view: View) {
+    fun gotoMainActivity() {
         val myIntent = Intent(this, MainActivity::class.java)
         val myBundle = Bundle()
         myBundle.putString("stack", stack)
+        Log.i("stack", stack)
         myBundle.putInt("precision", precision)
+        Log.i("precision", precision.toString())
         myIntent.putExtras(myBundle)
         startActivity(myIntent)
     }

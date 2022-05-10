@@ -19,8 +19,8 @@
 
         <TextView
             android:id="@+id/calcTextView"
-            android:layout_width="206dp"
-            android:layout_height="96dp"
+            android:layout_width="177dp"
+            android:layout_height="93dp"
             android:lines="2"
             android:maxLines="2"
             android:text=""
@@ -36,8 +36,8 @@
 
         <TextView
             android:id="@+id/stackTextView"
-            android:layout_width="121dp"
-            android:layout_height="98dp"
+            android:layout_width="158dp"
+            android:layout_height="92dp"
             android:background="@drawable/rounded_corners"
             android:lines="4"
             android:maxLines="4"
