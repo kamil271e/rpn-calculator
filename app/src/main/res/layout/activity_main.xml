@@ -89,6 +89,11 @@
     <!-- clear, swap, drop, ^n, sqrt !-->
     <LinearLayout style="@style/buttonRow">
 
+        <Button
+            style="@style/buttonOp"
+            android:onClick="changeSign"
+            android:text="+/-"
+            tools:ignore="UsingOnClickInXml" />
 
         <Button
             style="@style/buttonOp"

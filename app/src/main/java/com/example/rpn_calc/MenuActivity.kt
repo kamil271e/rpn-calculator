@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.NumberPicker
 import android.util.Log
+import android.view.View
 
 class MenuActivity : AppCompatActivity() {
     private var stack = ""
@@ -17,27 +18,22 @@ class MenuActivity : AppCompatActivity() {
     }
     private fun readStack(){
         stack = intent.getSerializableExtra("stack").toString()
-        //Log.i("stack", stack as String)
     }
     private fun loadPrecision(){
         val numberPicker: NumberPicker = findViewById(R.id.numberPicker)
         numberPicker.minValue = 1
         numberPicker.maxValue = 6
-        val values = arrayOf(1,2,3,4,5,6)
         numberPicker.wrapSelectorWheel = true
-
         numberPicker.setOnValueChangedListener {
                 _, _, newVal ->
-            precision = values[newVal]
+            precision = newVal
         }
     }
-    fun gotoMainActivity() {
+    fun gotoMainActivity(view: View) {
         val myIntent = Intent(this, MainActivity::class.java)
         val myBundle = Bundle()
         myBundle.putString("stack", stack)
-        Log.i("stack", stack)
         myBundle.putInt("precision", precision)
-        Log.i("precision", precision.toString())
         myIntent.putExtras(myBundle)
         startActivity(myIntent)
     }
