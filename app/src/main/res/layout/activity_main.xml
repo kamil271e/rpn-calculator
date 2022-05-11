@@ -41,7 +41,7 @@
             android:background="@drawable/rounded_corners"
             android:lines="4"
             android:maxLines="4"
-            android:text="0\n0\n0\n0"
+            android:text=""
             android:textAlignment="textEnd"
             android:textColor="@color/yellow"
             android:textSize="20sp"
@@ -91,7 +91,7 @@
 
         <Button
             style="@style/buttonOp"
-            android:onClick="changeSign"
+            android:onClick="signAction"
             android:text="+/-"
             tools:ignore="UsingOnClickInXml" />
 
@@ -183,7 +183,6 @@
 
         <Button
             style="@style/buttonOp"
-            android:background="@color/darkGrey"
             android:onClick="enterAction"
             android:text="ENTER"
             tools:ignore="UsingOnClickInXml" />
