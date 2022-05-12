@@ -8,6 +8,33 @@
     android:background="@color/black"
     tools:context=".MenuActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="108dp"
+        android:layout_height="40dp"
+        android:text="Theme:"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.184"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.551" />
+
+    <NumberPicker
+        android:id="@+id/numberPicker2"
+        android:layout_width="147dp"
+        android:layout_height="71dp"
+        android:layout_marginEnd="68dp"
+        android:scrollbarSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.554"
+        tools:ignore="MissingConstraints" />
+
     <NumberPicker
         android:id="@+id/numberPicker"
         android:layout_width="69dp"
@@ -27,7 +54,7 @@
         android:id="@+id/goBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="@drawable/purple"
         android:onClick="gotoMainActivity"
         android:text="@string/go_back"
         app:layout_constraintBottom_toBottomOf="parent"

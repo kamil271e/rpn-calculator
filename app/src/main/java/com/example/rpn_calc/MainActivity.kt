@@ -1,32 +1,40 @@
 package com.example.rpn_calc
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Binder
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.sqrt
 import kotlin.math.pow
+import kotlin.math.sqrt
+import android.util.Log
+
+
 
 class MainActivity : AppCompatActivity() {
     private var canPushStack = true
     private lateinit var stack: MutableList<String>
     private var precision: Int = 6
     private var maxWidth: Int = 14
+    private var theme = "purple"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         readIntents()
+        loadTheme()
     }
     fun numberAction(view: View) {
-        if (view is Button) calcTextView.append(view.text)
+        if (view is Button && calcTextView.text.length < maxWidth && calcTextView.text.toString() != "0") calcTextView.append(view.text)
     }
     fun operationAction(view: View) {
         val data = calcTextView.text.toString()
-        if (view is Button) {
+        if (view is Button && calcTextView.text.length < maxWidth) {
             if (view.text == "."){
                 if (!data.contains(".") && data.isNotEmpty()) calcTextView.append(view.text)
             }
@@ -90,6 +98,7 @@ class MainActivity : AppCompatActivity() {
             temp.isBlank() -> "-"
             temp=="-" -> ""
             temp[0] == '-' -> temp.subSequence(1,temp.length).toString()
+            temp=="0" -> "0"
             else -> "-$temp"
         }
     }
@@ -97,6 +106,7 @@ class MainActivity : AppCompatActivity() {
         val myIntent = Intent(this, MenuActivity::class.java)
         val temp = stack.joinToString(" ")
         myIntent.putExtra("stack", temp)
+        myIntent.putExtra("theme", theme)
         startActivity(myIntent)
     }
     private fun operation(b: String, a: String, op: Int) : String? {
@@ -162,5 +172,37 @@ class MainActivity : AppCompatActivity() {
         if (stack[0] != "null" && stack[0] != "") updateStackView()
         else stack.clear()
         precision = intent.getIntExtra("precision", precision)
+        theme = intent.getStringExtra("theme").toString()
+        if(theme == "null") theme="purple"
+    }
+    private fun loadTheme(){
+        val stackView = findViewById<TextView>(R.id.stackTextView)
+        val btnList = listOf(findViewById<Button>(R.id.AC), findViewById(R.id.SWAP), findViewById(R.id.BACK), findViewById<Button>(R.id.COMMA),
+            findViewById(R.id.DROP), findViewById(R.id.DIV), findViewById(R.id.ENTER), findViewById(R.id.MENU), findViewById(R.id.MIN),
+            findViewById(R.id.MULT), findViewById(R.id.PLUS), findViewById(R.id.SQRT), findViewById(R.id.POW), findViewById(R.id.SIGN))
+        Log.i("theme2", theme)
+        when (theme) {
+            "purple" -> {
+                stackView.setBackgroundResource(R.drawable.purple)
+                for (btn in btnList){
+                    btn.setTextColor(Color.parseColor("#FF6200EE"))
+                    supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FF6200EE")))
+                }
+            }
+            "teal" -> {
+                stackView.setBackgroundResource(R.drawable.teal)
+                for (btn in btnList){
+                    btn.setTextColor(Color.parseColor("#FF018786"))
+                    supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FF018786")))
+                }
+            }
+            else -> {
+                stackView.setBackgroundResource(R.drawable.red)
+                for (btn in btnList){
+                    btn.setTextColor(Color.RED)
+                    supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FF0000")))
+                }
+            }
+        }
     }
 }
