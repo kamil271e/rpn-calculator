@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.NumberPicker
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.graphics.drawable.ColorDrawable
@@ -39,13 +38,13 @@ class MenuActivity : AppCompatActivity() {
         val numberPicker: NumberPicker = findViewById(R.id.numberPicker2)
         numberPicker.minValue = 0
         numberPicker.maxValue = 2
-        numberPicker.wrapSelectorWheel = true
+        numberPicker.wrapSelectorWheel = false
         val values = mutableListOf("purple", "teal", "red")
         theme = intent.getStringExtra("theme").toString()
-        for (i in 0..2){
+        for (i in 0 until values.size){
             if (values[i] == theme){
                 values.removeAt(i)
-                values.add(0,theme)
+                values.add(0, theme)
             }
         }
         numberPicker.displayedValues = values.toTypedArray()

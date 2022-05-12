@@ -3,7 +3,6 @@ package com.example.rpn_calc
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Binder
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun backSpaceAction(view: View) {
-        if(calcTextView.text.isNotBlank()) calcTextView.text = calcTextView.text.dropLast(1)
+        if(calcTextView.text.isNotBlank() && calcTextView.text.toString() != "Infinity" && calcTextView.text.toString() != "NaN") calcTextView.text = calcTextView.text.dropLast(1)
     }
     fun swapAction(view: View) {
         if (stack.size >= 2){
@@ -133,7 +132,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkPrecision(str: String) : String{
         if (!str.contains(".")) return str
         val decimalPoints = str.split(".")[1]
-        val exp: String; val result: String; val diff = precision - decimalPoints.length
+        val diff = precision - decimalPoints.length
         return when {
             diff > 0 -> str
             decimalPoints.contains("E") ->
@@ -177,7 +176,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun loadTheme(){
         val stackView = findViewById<TextView>(R.id.stackTextView)
-        val btnList = listOf(findViewById<Button>(R.id.AC), findViewById(R.id.SWAP), findViewById(R.id.BACK), findViewById<Button>(R.id.COMMA),
+        val btnList = listOf(findViewById(R.id.AC), findViewById(R.id.SWAP), findViewById(R.id.BACK), findViewById<Button>(R.id.COMMA),
             findViewById(R.id.DROP), findViewById(R.id.DIV), findViewById(R.id.ENTER), findViewById(R.id.MENU), findViewById(R.id.MIN),
             findViewById(R.id.MULT), findViewById(R.id.PLUS), findViewById(R.id.SQRT), findViewById(R.id.POW), findViewById(R.id.SIGN))
         Log.i("theme2", theme)
